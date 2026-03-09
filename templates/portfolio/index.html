@@ -1,0 +1,381 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{{ profile.name }} — {{ profile.tagline }}</title>
+  <meta name="description" content="{{ profile.summary|truncatechars:160 }}"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'portfolio/css/style.css' %}">
+</head>
+<body class="dark">
+
+  <!-- CURSOR -->
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-outline" id="cursorOutline"></div>
+
+  <!-- LOADER -->
+  <div class="loader" id="loader">
+    <div class="loader-inner">
+      <span class="loader-name">ADH</span>
+      <div class="loader-bar"><div class="loader-fill"></div></div>
+    </div>
+  </div>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <a class="nav-brand" href="#">
+      <span class="brand-bracket">&lt;</span>ADH<span class="brand-bracket">/&gt;</span>
+    </a>
+    <div class="nav-center">
+      <a href="#about" class="nav-link">About</a>
+      <a href="#experience" class="nav-link">Experience</a>
+      <a href="#projects" class="nav-link">Projects</a>
+      <a href="#skills" class="nav-link">Skills</a>
+      <a href="#certifications" class="nav-link">Certs</a>
+      <a href="#contact" class="nav-link">Contact</a>
+    </div>
+    <div class="nav-right">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span class="theme-icon sun">☀️</span>
+        <span class="theme-icon moon">🌙</span>
+      </button>
+      <a href="{% static 'portfolio/Ahmad_Dangani_Hussaini_CV.pdf' %}" download class="btn-cv">
+        Download CV <span>↓</span>
+      </a>
+    </div>
+    <button class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#about" class="mobile-link">About</a>
+    <a href="#experience" class="mobile-link">Experience</a>
+    <a href="#projects" class="mobile-link">Projects</a>
+    <a href="#skills" class="mobile-link">Skills</a>
+    <a href="#certifications" class="mobile-link">Certs</a>
+    <a href="#contact" class="mobile-link">Contact</a>
+    <a href="{% static 'portfolio/Ahmad_Dangani_Hussaini_CV.pdf' %}" download class="mobile-link accent">↓ Download CV</a>
+  </div>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-bg">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+      <canvas id="heroCanvas"></canvas>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge reveal">
+        <span class="badge-dot"></span>
+        Available for opportunities
+      </div>
+      <h1 class="hero-title reveal">
+        <span class="line-1">{{ profile.name.split.0 }}</span>
+        <span class="line-2">{{ profile.name.split.1 }} <span class="outline-text">{{ profile.name.split.2 }}</span></span>
+      </h1>
+      <div class="hero-typing reveal">
+        <span class="typing-prefix">I build</span>
+        <span class="typing-text" id="typingText"></span>
+        <span class="cursor-blink">|</span>
+      </div>
+      <p class="hero-sub reveal">{{ profile.summary|truncatechars:180 }}</p>
+      <div class="hero-actions reveal">
+        <a href="#projects" class="btn-primary">View My Work <span>→</span></a>
+        <a href="#contact" class="btn-secondary">Get In Touch</a>
+      </div>
+      <div class="hero-stats reveal">
+        {% for stat in stats %}
+        <div class="stat">
+          <span class="stat-num">{{ stat.value }}</span>
+          <span class="stat-label">{{ stat.label }}</span>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="hero-scroll-indicator">
+      <div class="scroll-mouse"><div class="scroll-wheel"></div></div>
+      <span>Scroll down</span>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="section">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">01. About</span>
+        <h2 class="section-title">Who I Am</h2>
+      </div>
+      <div class="about-grid">
+        <div class="about-visual reveal">
+          <div class="avatar-wrap">
+            <div class="avatar-placeholder">
+              <span class="avatar-initials">ADH</span>
+              <div class="avatar-ring ring-1"></div>
+              <div class="avatar-ring ring-2"></div>
+              <div class="avatar-ring ring-3"></div>
+            </div>
+            <div class="avatar-badge">
+              <span>🇳🇬</span> Nigeria
+            </div>
+          </div>
+          <div class="about-quick-facts">
+            {% for fact in quick_facts %}
+            <div class="quick-fact">
+              <span class="qf-icon">{{ fact.icon }}</span>
+              <div>
+                <span class="qf-label">{{ fact.label }}</span>
+                <span class="qf-value">{{ fact.value }}</span>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="about-text reveal">
+          <p class="about-bio">{{ profile.summary }}</p>
+          <div class="about-highlights">
+            {% for highlight in highlights %}
+            <div class="highlight-item">
+              <span class="hi-icon">{{ highlight.icon }}</span>
+              <span>{{ highlight.text }}</span>
+            </div>
+            {% endfor %}
+          </div>
+          <div class="about-languages">
+            <span class="lang-label">Languages:</span>
+            {% for lang in languages %}
+            <span class="lang-badge">{{ lang }}</span>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDUCATION & EXPERIENCE -->
+  <section id="experience" class="section section-alt">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">02. Journey</span>
+        <h2 class="section-title">Education & Experience</h2>
+      </div>
+      <div class="timeline-grid">
+        <div class="timeline-col">
+          <h3 class="timeline-col-title reveal"><span>🎓</span> Education</h3>
+          {% for edu in education %}
+          <div class="timeline-item reveal">
+            <div class="timeline-dot"></div>
+            <div class="timeline-card">
+              <span class="tl-year">{{ edu.years }}</span>
+              <h4 class="tl-title">{{ edu.degree }}</h4>
+              <p class="tl-place">{{ edu.institution }}</p>
+              {% if edu.note %}<p class="tl-note">{{ edu.note }}</p>{% endif %}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        <div class="timeline-col">
+          <h3 class="timeline-col-title reveal"><span>💼</span> Experience</h3>
+          {% for exp in experience %}
+          <div class="timeline-item reveal">
+            <div class="timeline-dot"></div>
+            <div class="timeline-card">
+              <span class="tl-year">{{ exp.years }}</span>
+              <h4 class="tl-title">{{ exp.role }}</h4>
+              <p class="tl-place">{{ exp.company }} · {{ exp.location }}</p>
+              <ul class="tl-resp">
+                {% for resp in exp.responsibilities %}
+                <li>{{ resp }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects" class="section">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">03. Work</span>
+        <h2 class="section-title">Projects</h2>
+      </div>
+      <div class="projects-grid">
+        {% for project in projects %}
+        <div class="project-card reveal {% if forloop.first %}project-featured{% endif %}">
+          <div class="project-header">
+            <div class="project-icon">{{ project.icon }}</div>
+            <div class="project-links">
+              {% if project.github %}<a href="{{ project.github }}" target="_blank" class="proj-link" title="GitHub">⌥</a>{% endif %}
+              {% if project.live %}<a href="{{ project.live }}" target="_blank" class="proj-link" title="Live">↗</a>{% endif %}
+            </div>
+          </div>
+          {% if forloop.first %}<span class="featured-badge">⭐ Featured Project</span>{% endif %}
+          <h3 class="project-name">{{ project.name }}</h3>
+          <p class="project-desc">{{ project.description }}</p>
+          <div class="project-tech">
+            {% for tech in project.tech %}
+            <span class="tech-pill">{{ tech }}</span>
+            {% endfor %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills" class="section section-alt">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">04. Abilities</span>
+        <h2 class="section-title">Skills & Tools</h2>
+      </div>
+      <div class="skills-wrapper">
+        {% for category in skill_categories %}
+        <div class="skill-category reveal">
+          <div class="skill-cat-header">
+            <span class="skill-cat-icon">{{ category.icon }}</span>
+            <h3 class="skill-cat-name">{{ category.name }}</h3>
+          </div>
+          <div class="skill-items">
+            {% for skill in category.skills %}
+            <div class="skill-item">
+              <div class="skill-info">
+                <span class="skill-name">{{ skill.name }}</span>
+                <span class="skill-pct">{{ skill.level }}%</span>
+              </div>
+              <div class="skill-bar">
+                <div class="skill-fill" data-width="{{ skill.level }}"></div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="tools-section reveal">
+        <h3 class="tools-title">Tools & Technologies</h3>
+        <div class="tools-grid">
+          {% for tool in tools %}
+          <div class="tool-chip">
+            <span class="tool-icon">{{ tool.icon }}</span>
+            <span>{{ tool.name }}</span>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CERTIFICATIONS -->
+  <section id="certifications" class="section">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">05. Learning</span>
+        <h2 class="section-title">Certifications</h2>
+      </div>
+      <div class="certs-grid">
+        {% for cert in certifications %}
+        <div class="cert-card reveal">
+          <div class="cert-provider-logo">{{ cert.logo }}</div>
+          <div class="cert-info">
+            <span class="cert-provider">{{ cert.provider }}</span>
+            <h4 class="cert-name">{{ cert.name }}</h4>
+            <span class="cert-year">{{ cert.year }}</span>
+          </div>
+          <div class="cert-badge">✓</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="section section-alt">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">06. Connect</span>
+        <h2 class="section-title">Get In Touch</h2>
+        <p class="section-sub">I'm open to opportunities, collaborations, and interesting conversations.</p>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-info reveal">
+          {% for item in contact_items %}
+          <a href="{{ item.href }}" class="contact-item" {% if item.external %}target="_blank"{% endif %}>
+            <div class="ci-icon">{{ item.icon }}</div>
+            <div class="ci-text">
+              <span class="ci-label">{{ item.label }}</span>
+              <span class="ci-value">{{ item.value }}</span>
+            </div>
+            <span class="ci-arrow">→</span>
+          </a>
+          {% endfor %}
+          <div class="contact-availability">
+            <div class="avail-dot"></div>
+            <span>Currently available for freelance & full-time roles</span>
+          </div>
+        </div>
+
+        <form class="contact-form reveal" method="POST" action="{% url 'portfolio:contact' %}" id="contactForm">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="name">Your Name</label>
+            <input type="text" id="name" name="name" placeholder="John Doe" required />
+          </div>
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" placeholder="john@example.com" required />
+          </div>
+          <div class="form-group">
+            <label for="subject">Subject</label>
+            <input type="text" id="subject" name="subject" placeholder="Project Discussion" required />
+          </div>
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="5" placeholder="Tell me about your project..." required></textarea>
+          </div>
+          {% if messages %}
+            {% for message in messages %}
+            <div class="form-msg form-msg-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+          <button type="submit" class="btn-submit" id="submitBtn">
+            <span class="btn-text">Send Message</span>
+            <span class="btn-icon">→</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <span class="brand-bracket">&lt;</span>ADH<span class="brand-bracket">/&gt;</span>
+        </div>
+        <p class="footer-copy">
+          Crafted with ❤️ by Ahmad Dangani Hussaini · {{ current_year }}
+        </p>
+        <div class="footer-links">
+          <a href="mailto:{{ profile.email }}">Email</a>
+          <a href="https://{{ profile.linkedin }}" target="_blank">LinkedIn</a>
+          <a href="tel:{{ profile.phone }}">Phone</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="{% static 'portfolio/js/main.js' %}"></script>
+</body>
+</html>
